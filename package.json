@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "start": "node migrate.js"
+  },
+  "dependencies": {
+    "mysql": "^2.18.1"
+  }
+}
