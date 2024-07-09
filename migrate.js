@@ -21,7 +21,7 @@ var dstConnection = mysql.createConnection({
 srcConnection.connect();
 dstConnection.connect();
 
-// migrateFacility(srcConnection, dstConnection);
-// migrateContracts(srcConnection, dstConnection);
-// migrateUsers(srcConnection, dstConnection);
+migrateFacility(srcConnection, dstConnection);
+migrateContracts(srcConnection, dstConnection);
+migrateUsers(srcConnection, dstConnection);
 migrateAdminUsers(srcConnection, dstConnection);

@@ -25,7 +25,7 @@ exports.migrateAdminUsers = function(srcConnection, dstConnection) {
         }
     });
 
-    var query = srcConnection.query('SELECT admin_user.*, epark_facility.* FROM epark_facility INNER JOIN medigle_facility ON epark_facility.id = medigle_facility.epark_id');
+    var query = srcConnection.query('SELECT * FROM admin_user');
 
     var progress = 0;
     query.on('result', function(row) {
@@ -37,7 +37,7 @@ exports.migrateAdminUsers = function(srcConnection, dstConnection) {
             admin_user_name: row.name,
             is_active: row.use,
             is_locked: row.failed_count,
-            update_user: row.updated_by,
+            updated_by: row.update_user,
             created_at: row.created,
             updated_at: row.modified
         };
