@@ -1,4 +1,5 @@
 exports.migrateUsers = function(srcConnection, dstConnection) {
+    const queryStart = Date.now();
     
     dstConnection.query("DROP TABLE IF EXISTS users", function (error, result, fields) {
         if (error) {
@@ -51,5 +52,11 @@ exports.migrateUsers = function(srcConnection, dstConnection) {
             progress = progress + 1;
             srcConnection.resume();
         });
+    });
+    query.on('end', function() {
+        const queryEnd = Date.now();
+        const queryExecutionTime = queryEnd - queryStart;
+        console.log("Users Total count:",progress);
+        console.log(`Query execution time: ${(queryExecutionTime / 1000).toFixed(2)} seconds.`);
     });
 }
