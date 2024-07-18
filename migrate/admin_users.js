@@ -44,7 +44,6 @@ exports.migrateAdminUsers = function(srcConnection, dstConnection) {
 
         dstConnection.query("INSERT INTO admin_users SET ?", newRow, function(error, result, fields) {
             if (error) throw error;
-            console.log(`No ${progress} row inserted successfully`);
             progress = progress + 1;
             srcConnection.resume();
         });

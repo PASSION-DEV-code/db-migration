@@ -5,16 +5,16 @@ const { migrateUsers } = require('./migrate/users');
 const { migrateAdminUsers } = require('./migrate/admin_users');
 
 var srcConnection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
+    host: 'medigle-db-dev-main-mariadb.c3kt6elpaaoa.ap-northeast-1.rds.amazonaws.com',
+    user: 'admin',
+    password: 'g.(?gcv*m7AT8]Jf-loolEV)rH9Q',
     database: 'medigle'
 });
 
 var dstConnection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
+    host: 'medigle-db-dev-main-mariadb.c3kt6elpaaoa.ap-northeast-1.rds.amazonaws.com',
+    user: 'admin',
+    password: 'g.(?gcv*m7AT8]Jf-loolEV)rH9Q',
     database: 'newMedigle'
 });
 

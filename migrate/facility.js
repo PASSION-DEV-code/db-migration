@@ -37,7 +37,6 @@ exports.migrateFacility = function(srcConnection, dstConnection) {
         };
 
         dstConnection.query("INSERT INTO facilities SET ?", newRow, function(error, result, fields) {
-            console.log(`No ${progress} row inserted successfully`);
             progress = progress + 1;
             srcConnection.resume();
         });
