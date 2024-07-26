@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "start": "node migrate.js"
+    "migrate": "node migrate.js",
+    "start": "node index.js"
   },
   "dependencies": {
     "dotenv": "^16.4.5",

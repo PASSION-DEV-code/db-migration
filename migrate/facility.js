@@ -1,4 +1,5 @@
-exports.migrateFacility = function(srcConnection, dstConnection) {
+const { migrateConnection } = require('./connection');
+exports.migrateFacility = function(srcConnection, dstConnection, mgConnection) {
     const queryStart = Date.now();
 
     dstConnection.query("DROP TABLE IF EXISTS facilities", function (error, result, fields) {
@@ -38,6 +39,7 @@ exports.migrateFacility = function(srcConnection, dstConnection) {
 
         dstConnection.query("INSERT INTO facilities SET ?", newRow, function(error, result, fields) {
             progress = progress + 1;
+            migrateConnection(mgConnection, 'epark_facility', 'facilities', row.id, row.id);
             srcConnection.resume();
         });
     });

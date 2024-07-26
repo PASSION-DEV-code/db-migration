@@ -1,4 +1,5 @@
-exports.migrateContracts = function(srcConnection, dstConnection) {
+const { migrateConnection } = require('./connection');
+exports.migrateContracts = function(srcConnection, dstConnection, mgConnection) {
     const queryStart = Date.now();
 
     dstConnection.query("DROP TABLE IF EXISTS contracts", function (error, result, fields) {
@@ -53,6 +54,7 @@ exports.migrateContracts = function(srcConnection, dstConnection) {
 
         dstConnection.query("INSERT INTO contracts SET ?", newRow, function(error, result, fields) {
             if (error) throw error;
+            migrateConnection(mgConnection, 'medigle_facility', 'contracts', row.id, result.insertId);
             progress = progress + 1;
             srcConnection.resume();
         });

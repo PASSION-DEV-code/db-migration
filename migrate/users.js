@@ -1,4 +1,5 @@
-exports.migrateUsers = function(srcConnection, dstConnection) {
+const { migrateConnection } = require('./connection');
+exports.migrateUsers = function(srcConnection, dstConnection, mgConnection) {
     const queryStart = Date.now();
     
     dstConnection.query("DROP TABLE IF EXISTS users", function (error, result, fields) {
@@ -48,6 +49,7 @@ exports.migrateUsers = function(srcConnection, dstConnection) {
 
         dstConnection.query("INSERT INTO users SET ?", newRow, function(error, result, fields) {
             if (error) throw error;
+            migrateConnection(mgConnection, 'user', 'users', row.id, result.insertId);
             progress = progress + 1;
             srcConnection.resume();
         });
