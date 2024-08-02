@@ -1,6 +1,6 @@
 const { migrateConnection } = require('../migrate/connection');
 
-exports.insert = function (connection, table, row) {
+exports.insert = function (res, connection, table, row) {
     let newTable;
     switch (table) {
         case 'medigle_facility':
@@ -69,12 +69,13 @@ exports.insert = function (connection, table, row) {
             break;
     }
     connection.query(`INSERT INTO ${newTable} SET ?`, newRow, function (error, result, fields) {
+        console.log(result);
         migrateConnection(connection, table, newTable, row.id, result.insertId);
         console.log('inserted successfully');
     });
 }
 
-exports.update = function (connection, table, row) {
+exports.update = function (res, connection, table, row) {
     let newTable;
     switch (table) {
         case 'medigle_facility':
@@ -143,19 +144,18 @@ exports.update = function (connection, table, row) {
             break;
     }
     var newId;
-    var query = connection.query(`SELECT * from db_connection WHERE oldDB=${table} AND newDB=${newTable} AND old_id=${row.id}`);
+    var query = connection.query(`SELECT * from db_connection WHERE oldDB='${table}' AND newDB='${newTable}' AND old_id='${row.id}'`);
     query.on('result', function (row) {
         newId = row.new_id;
         newRow.id = newId;
-        connection.query(`DELETE ${newTable} WHERE id='${newId}'`, newRow, function (error, result, fields) {
-        });
-        connection.query(`INSERT INTO ${newTable} SET ?`, newRow, function (error, result, fields) {
+        console.log(newId);
+        connection.query(`UPDATE ${newTable} SET ? WHERE id='${newId}'`, newRow, function (error, result, fields) {
             console.log('updated successfully');
         });
     });
 }
 
-exports.remove = function (connection, table, row) {
+exports.remove = function (res, connection, table, row) {
     let newTable;
     switch (table) {
         case 'medigle_facility':
@@ -224,12 +224,13 @@ exports.remove = function (connection, table, row) {
             break;
     }
     var newId;
-    var query = connection.query(`SELECT * from db_connection WHERE oldDB=${table} AND newDB=${newTable} AND old_id=${row.id}`);
+    var query = connection.query(`SELECT * from db_connection WHERE oldDB='${table}' AND newDB='${newTable}' AND old_id='${row.id}'`);
     query.on('result', function (row) {
         newId = row.new_id;
         newRow.id = newId;
-    });
-    connection.query(`DELETE ${newTable} WHERE id='${newId}'`, newRow, function (error, result, fields) {
-        console.log('deleted successfully');
+        console.log(newId);
+        connection.query(`DELETE FROM ${newTable} WHERE id='${newId}'`, function (error, result, fields) {
+            console.log('deleted successfully');
+        });
     });
 }

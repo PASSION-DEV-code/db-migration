@@ -6,6 +6,7 @@ var express = require('express');
 var mysql = require('mysql');
 
 var app = express();
+app.use(express.json());
 
 var { insert, update, remove } = require('./sync/sync');
 
@@ -21,15 +22,16 @@ app.post('/sync', function (req, res) {
     const { action, table, data } = req.body;
     switch (action) {
         case "INSERT":
-            insert(mgConnection, table, data);
+            insert(res, mgConnection, table, data);
             break;
         case "UPDATE":
-            update(mgConnection, table, data);
+            update(res, mgConnection, table, data);
             break;
         case "DELETE":
-            remove(mgConnection, table, data);
+            remove(res, mgConnection, table, data);
             break;
     }
+    res.status(200).send({ result: "Success" });
 });
 
 //delete an employee
